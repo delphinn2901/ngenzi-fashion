@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
 import heroMenImage from "../assets/public/images/men-category (2).jpg"
 import menCategoryImage from "../assets/public/images/men-category (2).jpg"
@@ -10,6 +11,34 @@ import productFourImage from "../assets/public/images/product-4.jpg"
 import productFiveImage from "../assets/public/images/product-5.jpg"
 
 function Home() {
+  const heroSlides = [
+    {
+      image: heroMenImage,
+      alt: "Men's fashion collection",
+      heading: "Fresh Fits for",
+      highlight: "Him",
+      description: "Clean cuts, premium fabrics, effortless style.",
+      action: "Shop Men",
+    },
+    {
+      image: womenCategoryImage,
+      alt: "Women's fashion collection",
+      heading: "Find Your",
+      highlight: "Style",
+      description: "Discover thoughtfully selected looks for every occasion.",
+      action: "Shop Women",
+    },
+    {
+      image: kidsCategoryImage,
+      alt: "Kids' fashion collection",
+      heading: "Little Looks,",
+      highlight: "Big Style",
+      description: "Comfortable, playful pieces for your little ones.",
+      action: "Shop Kids",
+    },
+  ]
+  const [activeSlide, setActiveSlide] = useState(0)
+
   const products = [
     { name: "Classic Denim Set", image: productOneImage, price: "85,000 RWF" },
     { name: "Teal Casual Co-ord", image: productTwoImage, price: "65,000 RWF" },
@@ -17,6 +46,9 @@ function Home() {
     { name: "Modern Brown Outfit", image: productFourImage, price: "55,000 RWF" },
     { name: "Women's Weekend Set", image: productFiveImage, price: "48,000 RWF" },
   ]
+  const showSlide = (index) => {
+    setActiveSlide((index + heroSlides.length) % heroSlides.length)
+  }
 
   return (
     <main>
@@ -28,8 +60,9 @@ function Home() {
         {/* Background Image */}
 
         <img
-          src={heroMenImage}
-          alt="NGenziFashioN men's collection"
+          key={heroSlides[activeSlide].image}
+          src={heroSlides[activeSlide].image}
+          alt={heroSlides[activeSlide].alt}
           className="absolute inset-0 w-full h-full object-cover"
         />
 
@@ -49,24 +82,25 @@ function Home() {
               <span className="w-10 h-[2px] bg-yellow-400"></span>
 
               <p className="text-sm font-semibold tracking-[0.3em] uppercase">
-                Just Dropped
+                {activeSlide === 0 ? "Just Dropped" : "Explore the Collection"}
               </p>
 
             </div>
 
 
             <h1 className="text-5xl md:text-7xl font-serif leading-tight">
-              Fresh Fits for <span className="text-yellow-400">Him</span>
+              {heroSlides[activeSlide].heading}{" "}
+              <span className="text-yellow-400">{heroSlides[activeSlide].highlight}</span>
             </h1>
 
 
             <p className="mt-6 text-lg md:text-xl text-gray-200 max-w-lg">
-              Clean cuts, premium fabrics, effortless style.
+              {heroSlides[activeSlide].description}
             </p>
 
 
             <button className="mt-8 inline-flex items-center gap-3 bg-yellow-400 text-black px-7 py-4 rounded-md font-semibold hover:bg-yellow-300 transition">
-              Shop Men
+              {heroSlides[activeSlide].action}
               <ArrowRight size={20} />
             </button>
 
@@ -78,6 +112,9 @@ function Home() {
         {/* Previous button */}
 
         <button
+          type="button"
+          onClick={() => showSlide(activeSlide - 1)}
+          aria-label="Previous slide"
           className="absolute left-5 top-1/2 -translate-y-1/2 z-20
           w-12 h-12 rounded-full bg-white/90 text-black
           flex items-center justify-center
@@ -90,6 +127,9 @@ function Home() {
         {/* Next button */}
 
         <button
+          type="button"
+          onClick={() => showSlide(activeSlide + 1)}
+          aria-label="Next slide"
           className="absolute right-5 top-1/2 -translate-y-1/2 z-20
           w-12 h-12 rounded-full bg-white/90 text-black
           flex items-center justify-center
@@ -103,11 +143,18 @@ function Home() {
 
         <div className="absolute bottom-7 left-1/2 -translate-x-1/2 z-20 flex gap-3">
 
-          <span className="w-3 h-3 rounded-full bg-yellow-400"></span>
-
-          <span className="w-3 h-3 rounded-full bg-white/60"></span>
-
-          <span className="w-3 h-3 rounded-full bg-white/60"></span>
+          {heroSlides.map((slide, index) => (
+            <button
+              key={slide.alt}
+              type="button"
+              onClick={() => showSlide(index)}
+              aria-label={`Show slide ${index + 1}`}
+              aria-current={activeSlide === index ? "true" : undefined}
+              className={`h-3 w-3 rounded-full transition ${
+                activeSlide === index ? "bg-yellow-400" : "bg-white/60 hover:bg-white"
+              }`}
+            />
+          ))}
 
         </div>
 
