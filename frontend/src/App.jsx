@@ -1,32 +1,44 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+
 import Navbar from "./components/Navbar"
+
+import Home from "./pages/Home"
+import Shop from "./pages/Shop"
+import ProductDetails from "./pages/ProductDetails"
+import Cart from "./pages/Cart"
+import About from "./pages/About"
+import Login from "./pages/Login"
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <BrowserRouter>
 
-      <Navbar />
+      <div className="min-h-screen bg-gray-50">
 
-      <main className="max-w-7xl mx-auto px-6 py-20">
+        <Navbar />
 
-        <div className="text-center">
+        <Routes>
 
-          <h1 className="text-5xl font-bold text-gray-900">
-            Welcome to NGenziFashioN
-          </h1>
+          <Route path="/" element={<Home />} />
 
-          <p className="mt-6 text-lg text-gray-600">
-            Quality fashion for everyone.
-          </p>
+          <Route path="/shop" element={<Shop />} />
 
-          <button className="mt-8 bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-800">
-            Shop Now
-          </button>
+          <Route
+            path="/product/:id"
+            element={<ProductDetails />}
+          />
 
-        </div>
+          <Route path="/cart" element={<Cart />} />
 
-      </main>
+          <Route path="/about" element={<About />} />
 
-    </div>
+          <Route path="/login" element={<Login />} />
+
+        </Routes>
+
+      </div>
+
+    </BrowserRouter>
   )
 }
 
